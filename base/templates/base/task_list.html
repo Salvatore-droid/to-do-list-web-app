@@ -1,0 +1,31 @@
+{% extends 'base/main.html' %}
+{% block content %}
+    {% if request.user.is_authenticated%}
+        <h2 class="logo">Hello {{request.user}}</h2>
+        <a href="{% url 'logout' %}" class="logout">logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">login</a>
+    {% endif %}
+
+    <h1>My to do list</h1>
+    <a href="{% url 'create' %}" class="add-task">add task</a>
+    <div class="list-form">
+        <form method="GET">
+            <input type="text" name="text-area" value="{{search_input}}" class="search">
+            <button type="submit">search</button>
+        </form>
+    </div>
+    <p>you have {{ count }} incomplete task{{count|pluralize:"s"}}</p>
+    <h3>Item</h3>
+    {% for task in tasks %}
+        <div class="item">
+            <div class="title">
+                <p>{{ task.title }}</p>
+            </div>
+            <div class="edit-btn">
+                <a href="{% url 'update' task.id %}">update</a> 
+                <a href="{% url 'delete' task.id%}">delete</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
